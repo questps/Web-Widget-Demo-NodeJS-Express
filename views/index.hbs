@@ -1,0 +1,21 @@
+<h1>Quest Web Widget Example</h1>
+
+<div id="payment-list"></div>
+<form action="/pay" id="pay" method="POST">
+  <input type="hidden" name="webWidget" />
+</form>
+
+<script src={{{webWidgetScript}}}></script>
+<script defer>
+  const token = {{{token}}};
+  const webWidget = createQuestWebWidget(token);
+
+  async function processPayment(request) {
+    console.log('Payment details: ', request);
+    document.querySelector('#pay input[name="webWidget"]').value = JSON.stringify(request.requestFields);
+    document.querySelector('#pay').submit();
+    return { complete: true };
+  }
+
+  webWidget.createList(undefined, document.getElementById('payment-list'), processPayment);
+</script>

@@ -1,0 +1,5 @@
+.env
+node_modules/
+dist/
+public/.well-known/apple-developer-merchantid-domain-association.txt
+.vercel

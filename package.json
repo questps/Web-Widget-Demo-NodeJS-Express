@@ -1,0 +1,28 @@
+{
+  "name": "web-widget-demo-nodejs-express",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon --exec node --env-file=.env -r ts-node/register src/index.ts",
+    "build": "tsc",
+    "start": "node --env-file=.env dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/questps/web-widget-demo.git"
+  },
+  "author": "Quest Payment Systems",
+  "description": "Example running the Quest Web Widgets",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.2",
+    "zod": "^3.25.41"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
