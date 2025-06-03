@@ -62,3 +62,5 @@ app.use('/.well-known', express.static(`${__dirname}/../public/.well-known`));
 app.listen(settings.listenPort, () => {
   console.log(`Listening on port ${settings.listenPort}`);
 });
+
+module.exports = app;
