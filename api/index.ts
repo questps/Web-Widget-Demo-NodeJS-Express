@@ -10,7 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', `${__dirname}/../views`);
-app.use('/scripts', express.static('../../packages/quest-web-widget/dist'));
 
 app.get('/', async (req, res) => {
   const token = await startWebWidget(settings.transactionAmount, settings.transactionCurrency);
