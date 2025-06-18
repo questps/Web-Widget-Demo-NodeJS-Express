@@ -1,10 +1,41 @@
-<h1>Quest Web Widget Example</h1>
+<h1>Payment options</h1>
 
-<div id="payment-list"></div>
-<form action="/pay" id="pay" method="POST">
-  <input type="hidden" name="webWidget" />
-</form>
+<section class="my-5">
+  <h2>Quest Financial Card Example</h2>
 
+  <form class="needs-validation w-100" method="POST" action="/pay-financial-card">
+    <div class="custom-control custom-radio">
+      <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked />
+      <label class="custom-control-label" for="credit">Credit card</label>
+    </div>
+    <div>
+      <header>Credit card details</header>
+      <div class="form-control" id="financial-card-widget"></div>
+      <div class="invalid-feedback" id="quest-financial-card-invalid"></div>
+    </div>
+    <hr class="mb-3" />
+    <button class="btn btn-primary btn-md btn-block w-100" type="submit">Pay</button>
+  </form>
+</section>
+
+<section>
+  <h2>Quest Web Widget Example</h2>
+
+  <div id="payment-list"></div>
+  <form action="/pay-web-widget" id="pay" method="POST">
+    <input type="hidden" name="webWidget" />
+  </form>
+</section>
+
+{{!-- Financial card setup --}}
+<script src="https://cards.sandbox.upp.qps.io/js/widget-v1.js"></script>
+<script defer>
+  const uppPublicToken = "{{{uppPublicToken}}}";
+  uppInitialise(uppPublicToken);
+  questPaymentWidget("#financial-card-widget").focus();
+</script>
+
+{{!-- Alternative payment methods setup --}}
 <script src={{{webWidgetScript}}}></script>
 <script defer>
   const token = {{{token}}};

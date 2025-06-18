@@ -10,16 +10,18 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', `${__dirname}/../views`);
+app.use('/scripts', express.static('../../packages/quest-web-widget/dist'));
 
 app.get('/', async (req, res) => {
   const token = await startWebWidget(settings.transactionAmount, settings.transactionCurrency);
   res.render('index', {
+    uppPublicToken: settings.uppPublicToken,
     webWidgetScript: JSON.stringify(settings.webWidgetScript),
     token: JSON.stringify(token),
   });
 });
 
-app.post('/pay', async (req, res) => {
+app.post('/pay-web-widget', async (req, res) => {
   const { webWidget } = req.body;
   if (!webWidget) {
     res.status(400).send('Provider is required');
@@ -33,6 +35,31 @@ app.post('/pay', async (req, res) => {
     amount: settings.transactionAmount,
     currency: settings.transactionCurrency,
     webWidget: JSON.parse(webWidget),
+  });
+
+  if ('sendCustomerToUrl' in result) {
+    res.redirect(result.sendCustomerToUrl);
+    return;
+  }
+
+  res.redirect(getCompleteUrl(transactionReference));
+});
+
+app.post('/pay-financial-card', async (req, res) => {
+  const { 'card-token': cardToken } = req.body;
+  if (!cardToken) {
+    res.status(400).send('Provider is required');
+    return;
+  }
+  const transactionReference = crypto.randomUUID();
+  const result = await performPayment({
+    transactionReference,
+    ipAddress: req.ip ?? '',
+    amount: settings.transactionAmount,
+    currency: settings.transactionCurrency,
+    provider: 'financialcard',
+    customerToken: cardToken,
+    webWidget: undefined,
   });
 
   if ('sendCustomerToUrl' in result) {

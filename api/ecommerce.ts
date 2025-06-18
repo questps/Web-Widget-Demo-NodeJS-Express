@@ -29,12 +29,16 @@ export async function performPayment({
   amount,
   currency,
   webWidget,
+  provider,
+  customerToken,
 }: {
   transactionReference: string;
   ipAddress: string;
   amount: number;
   currency: string;
   webWidget: any;
+  provider?: string;
+  customerToken?: string;
 }) {
   const body: any = {
     transactionType: 'purchase',
@@ -43,6 +47,8 @@ export async function performPayment({
     transactionReference,
     clientIpAddress: ipAddress,
     saleType: 'website',
+    provider,
+    customerToken,
     webWidget,
     items: [
       {
@@ -81,7 +87,7 @@ export async function performPayment({
       email: 'homer.simpson@springfield-power.com',
       phone: '039123456',
     },
-    returnUrl: getCompleteUrl(transactionReference),
+    ...(provider !== 'financialcard' && { returnUrl: getCompleteUrl(transactionReference) }),
   };
   return await ecommerceRequest('/v1/transactions', body);
 }
