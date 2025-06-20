@@ -10,6 +10,15 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', `${__dirname}/../views`);
+app.get('/.well-known/apple-developer-merchantid-domain-association.txt', (_, res) => {
+  const applePayCert = process.env.APPLEPAY_DOMAIN_ASSOCIATION;
+  if (!applePayCert) {
+    res.status(404).send('Not found');
+    return;
+  }
+
+  res.type('text/plain').send(Buffer.from(applePayCert, 'base64'));
+});
 
 app.get('/', async (req, res) => {
   const token = await startWebWidget(settings.transactionAmount, settings.transactionCurrency);
@@ -81,9 +90,6 @@ app.get('/complete', async (req, res) => {
     approved: result.approved ? 'APPROVED' : 'DECLINED',
   });
 });
-
-app.use(express.static(`${__dirname}/../public/`));
-app.use('/.well-known', express.static(`${__dirname}/../public/.well-known`));
 
 app.listen(settings.listenPort, () => {
   console.log(`Listening on port ${settings.listenPort}`);
