@@ -21,18 +21,20 @@ app.get('/.well-known/apple-developer-merchantid-domain-association.txt', (_, re
 });
 
 app.get('/', async (req, res) => {
-  const token = await startWebWidget(settings.transactionAmount, settings.transactionCurrency);
+  const amount = typeof req.query.amount === 'string' ? +req.query.amount : settings.defaultTransactionAmount;
+  const token = await startWebWidget(amount, settings.transactionCurrency);
   res.render('index', {
     uppPublicToken: settings.uppPublicToken,
     webWidgetScript: JSON.stringify(settings.webWidgetScript),
     token: JSON.stringify(token),
+    amount,
   });
 });
 
 app.post('/pay-web-widget', async (req, res) => {
-  const { webWidget } = req.body;
-  if (!webWidget) {
-    res.status(400).send('Provider is required');
+  const { webWidget, amount } = req.body;
+  if (!webWidget || typeof amount !== 'string') {
+    res.status(400).send('Provider and amount is required');
     return;
   }
 
@@ -40,7 +42,7 @@ app.post('/pay-web-widget', async (req, res) => {
   const result = await performPayment({
     transactionReference,
     ipAddress: req.ip ?? '',
-    amount: settings.transactionAmount,
+    amount: +amount,
     currency: settings.transactionCurrency,
     webWidget: JSON.parse(webWidget),
   });
@@ -54,16 +56,16 @@ app.post('/pay-web-widget', async (req, res) => {
 });
 
 app.post('/pay-financial-card', async (req, res) => {
-  const { 'card-token': cardToken } = req.body;
-  if (!cardToken) {
-    res.status(400).send('Provider is required');
+  const { 'card-token': cardToken, amount } = req.body;
+  if (!cardToken || typeof amount !== 'string') {
+    res.status(400).send('Card token and amount is required');
     return;
   }
   const transactionReference = crypto.randomUUID();
   const result = await performPayment({
     transactionReference,
     ipAddress: req.ip ?? '',
-    amount: settings.transactionAmount,
+    amount: +amount,
     currency: settings.transactionCurrency,
     provider: 'financialcard',
     customerToken: cardToken,

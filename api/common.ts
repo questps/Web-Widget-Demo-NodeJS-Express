@@ -6,7 +6,7 @@ const schema = z.object({
   uppToken: z.string().min(1),
   uppPublicToken: z.string().min(1),
   webWidgetScript: z.string().url(),
-  transactionAmount: z.number().positive(),
+  defaultTransactionAmount: z.number().positive(),
   transactionCurrency: z.string().length(3),
   baseUrl: z.string().url(),
 });
@@ -17,7 +17,7 @@ const values: z.infer<typeof schema> = {
   uppToken: process.env.UPP_TOKEN!,
   uppPublicToken: process.env.UPP_PUBLIC_TOKEN!,
   webWidgetScript: process.env.WEB_WIDGET_SCRIPT ?? 'https://static.qps.io/upp/temp/web-widget.js',
-  transactionAmount: +(process.env.TRANSACTION_AMOUNT ?? 1.0),
+  defaultTransactionAmount: +(process.env.TRANSACTION_AMOUNT ?? 1.0),
   transactionCurrency: process.env.TRANSACTION_CURRENCY ?? 'aud',
   baseUrl: process.env.BASE_URL!,
 };
