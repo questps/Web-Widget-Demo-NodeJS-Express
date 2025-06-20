@@ -1,32 +1,19 @@
-<h1>Payment options</h1>
+<div class="my-3 text-center"><strong>Payment details</strong></div>
 
-<section class="my-5">
-  <h2>Quest Financial Card Example</h2>
+<form class="needs-validation w-100" method="POST" action="/pay-financial-card">
+  <div class="form-control" id="financial-card-widget"></div>
+  <input type="hidden" name="amount" value="{{amount}}" />
+  <div class="invalid-feedback d-block" id="quest-financial-card-invalid"></div>
+  <button class="btn btn-primary btn-md btn-block w-100 mt-2" type="submit">Pay with card</button>
+</form>
 
-  <form class="needs-validation w-100" method="POST" action="/pay-financial-card">
-    <div class="custom-control custom-radio">
-      <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked />
-      <label class="custom-control-label" for="credit">Credit card</label>
-    </div>
-    <div>
-      <header>Credit card details</header>
-      <div class="form-control" id="financial-card-widget"></div>
-      <div class="invalid-feedback" id="quest-financial-card-invalid"></div>
-    </div>
-    <hr class="mb-3" />
-    <button class="btn btn-primary btn-md btn-block w-100" type="submit">Pay</button>
-  </form>
-</section>
+<div class="payment-separator">or</div>
 
-<section>
-  <h2>Quest Web Widget Example</h2>
-
-  <div id="payment-list"></div>
-  <form action="/pay-web-widget" id="pay" method="POST">
-    <input type="hidden" name="webWidget" />
-    <input type="hidden" name="amount" value="{{amount}}" />
-  </form>
-</section>
+<div id="payment-list"></div>
+<form action="/pay-web-widget" id="pay" method="POST">
+  <input type="hidden" name="webWidget" />
+  <input type="hidden" name="amount" value="{{amount}}" />
+</form>
 
 {{!-- Financial card setup --}}
 <script src="https://cards.sandbox.upp.qps.io/js/widget-v1.js"></script>

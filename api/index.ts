@@ -28,6 +28,7 @@ app.get('/', async (req, res) => {
     webWidgetScript: JSON.stringify(settings.webWidgetScript),
     token: JSON.stringify(token),
     amount,
+    completeClass: 'pending',
   });
 });
 
