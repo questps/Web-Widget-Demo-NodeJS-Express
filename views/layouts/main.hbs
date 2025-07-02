@@ -16,7 +16,7 @@
 
       .payment {
         width: 100%;
-        max-width: 400px;
+        max-width: 500px;
         margin: 3rem auto 0 auto;
         background: #fff;
         padding: 1rem;
@@ -89,8 +89,22 @@
 
       /* on mobile */
       @media (max-width: 400px) {
+        /* click to pay does not appear if the width is too small */
+
+        body {
+          background: white;
+        }
+
         .payment {
           margin-top: 1rem;
+          padding: 1rem 0.5rem;
+          border: 0;
+          box-shadow: none;
+          border-radius: 0;
+        }
+
+        .container {
+          padding: 0;
         }
       }
 
