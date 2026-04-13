@@ -17,7 +17,7 @@
   "description": "Example running the Quest Web Widgets",
   "dependencies": {
     "express": "^5.1.0",
-    "express-handlebars": "^8.0.2",
+    "express-handlebars": "^8.0.7",
     "zod": "^3.25.41"
   },
   "devDependencies": {
