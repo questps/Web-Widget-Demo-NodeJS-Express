@@ -29,7 +29,6 @@ app.get('/', async (req, res) => {
     token: JSON.stringify(token),
     amount,
     completeClass: 'pending',
-    webWidgetUrl: settings.webWidgetUrl,
   });
 });
 

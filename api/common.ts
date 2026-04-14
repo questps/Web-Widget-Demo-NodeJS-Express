@@ -9,7 +9,6 @@ const schema = z.object({
   defaultTransactionAmount: z.number().positive(),
   transactionCurrency: z.string().length(3),
   baseUrl: z.string().url(),
-  webWidgetUrl: z.string().url(),
 });
 
 const values: z.infer<typeof schema> = {
@@ -21,7 +20,6 @@ const values: z.infer<typeof schema> = {
   defaultTransactionAmount: +(process.env.TRANSACTION_AMOUNT ?? 1.0),
   transactionCurrency: process.env.TRANSACTION_CURRENCY ?? 'aud',
   baseUrl: process.env.BASE_URL!,
-  webWidgetUrl: process.env.WEB_WIDGET_URL ?? 'https://cards.sandbox.upp.qps.io/js/widget-v1.js',
 };
 
 export const settings = schema.parse(values);
